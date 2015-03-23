@@ -7,12 +7,16 @@
 
     require_once "src/Category.php";
 
-    //$DB = new PDO('pgsql:host=localhost;dbname=to_do_test');
+    $DB = new PDO('pgsql:host=localhost;dbname=to_do_test');
 
     class CategoryTest extends PHPUnit_Framework_TestCase
     {
+        protected function tearDown()
+        {
+            Category::deleteAll();
+        }
 
-        function testGetName()
+        function test_GetName()
         {
             //Arrange
             $name = "Dog Stuff";
@@ -25,7 +29,7 @@
             $this->assertEquals($name, $result);
         }
 
-        function testSetName()
+        function test_SetName()
         {
             //Arrange
             $name = "Home Stuff";
@@ -40,7 +44,7 @@
             $this->assertEquals($new_name, $result);
         }
 
-        function testGetId()
+        function test_GetId()
         {
             //Arrange
             $name = "Home Stuff";
@@ -54,7 +58,7 @@
             $this->assertEquals($id, $result);
         }
 
-        function testSetId()
+        function test_SetId()
         {
             //Arrange
             $name = "Home Stuff";
@@ -68,7 +72,58 @@
 
             //Assert
             $this->assertEquals($new_id, $result);
+        }
 
+        function test_save()
+        {
+            //Arrange
+            $name = "Home Stuff";
+            $id = 1;
+            $test_category = new Category($name, $id);
+
+            //Act
+            $test_category->save();
+            $result = Category::getAll();
+
+            //Assert
+            $this->assertEquals($test_category, $result[0]);
+
+        }
+
+        function test_getAll()
+        {
+            //Arrange
+            $name = "Home Stuff";
+            $id = 1;
+            $test_category1 = new Category($name, $id);
+            $test_category1->save();
+
+            $name2 = "Work Stuff";
+            $id2 = 2;
+            $test_category2 = new Category($name2, $id2);
+            $test_category2->save();
+
+            //Act
+            $result = Category::getAll();
+
+            //Assert
+            $this->assertEquals([$test_category1, $test_category2], $result);
+        }
+
+        function test_deleteAll()
+        {
+            //Arrange
+            $name = "Home Stuff";
+            $id = 1;
+            $test_category = new Category($name, $id);
+            $test_category->save();
+
+            //Act
+            Category::deleteAll();
+            $result = Category::getAll();
+
+            //Assert
+            $this->assertEquals([], $result);
         }
 
     }
