@@ -95,8 +95,8 @@
             $categories = array();
             foreach($category_ids as $id){
                 $category_id = $id['categories_id'];
-                $result = $GLOBALS['DB']->query("SELECT * FROM categories WHERE id = {$categories_id};");
-                $returned_category = $result->getAll(PDO::FETCH_ASSOC);
+                $result = $GLOBALS['DB']->query("SELECT * FROM categories WHERE id = {$category_id};");
+                $returned_category = $result->fetchAll(PDO::FETCH_ASSOC);
                 $name = $returned_category[0]['name'];
                 $id = $returned_category[0]['id'];
                 $new_category = new Category($name, $id);

@@ -79,7 +79,36 @@
         function delete()
         {
             $GLOBALS['DB']->exec("DELETE FROM categories WHERE id = {$this->getId()};");
+            $GLOBALS['DB']->exec("DELETE FROM categories_tasks WHERE categories_id = {$this->getId()};");
         }
+
+        function getTasks()
+        {
+            $query = $GLOBALS['DB']->query("SELECT tasks_id FROM categories_tasks WHERE categories_id = {$this->getId()};");
+            $task_ids = $query->fetchAll(PDO::FETCH_ASSOC);
+
+            $tasks = array();
+            foreach($task_ids as $id){
+                $tasks_id = $id['tasks_id'];
+
+                $result = $GLOBALS['DB']->query("SELECT*FROM tasks WHERE id = {$tasks_id};");
+                $returned_task = $result->fetchAll(PDO::FETCH_ASSOC);
+
+                $description = $returned_task[0]['description'];
+                $id = $returned_task[0]['id'];
+
+                $new_task = new Task($description, $id);
+                array_push($tasks, $new_task);
+            }
+            return $tasks;
+        }
+
+        function addTask($task)
+        {
+            $GLOBALS['DB']->exec("INSERT INTO categories_tasks (categories_id, tasks_id) VALUES ({$this->getId()}, {$task->getId()});");
+        }
+
+
 
     }
 
