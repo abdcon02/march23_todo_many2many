@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>To Do Categories</title>
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+    </head>
+    <body>
+        <div class="container">
+            <h1>To Do List Categories</h1>
+            {% if categories is not empty %}
+                <h3>These are you categories:</h3>
+                    <ol>
+                    {% for thing in categories %}
+                        <li><a href='/categories{{ thing.getId }}'><button type="sumbit">{{ thing.getName }}</button></a></li>
+                        <br>
+                    {% endfor %}
+                    </ol>
+
+                    <form action="/delete_categories" method="post" class="form-group">
+                        <button type="submit">Delete All Categories</button>
+                    </form>
+
+                    {% else %}
+                        <h3>You have no Categories!</h3>
+            {% endif %}
+
+            <form action="/categories" method="post" class="form-group">
+                <label for="name">Make a Category</label>
+                <input type="text" name="name" id="name">
+                <button type="submit">Create Category</button>
+            </form>
+
+            <a href="/"><button type="submit">Go Home</button></a>
+        </div>
+    </body>
+</html>

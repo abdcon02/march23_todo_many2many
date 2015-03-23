@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+        <title>To Do Tasks</title>
+    </head>
+    <body>
+        <div class="container">
+
+            <h1>To Do List Tasks</h1>
+            {% if tasks is not empty %}
+                <h3>Here are your tasks:</h3>
+                <ul>
+                    {% for task in tasks %}
+                        <li><a href="/tasks/{{task.getId}}">{{ task.getDescription }}</a></li>
+                    {% endfor %}
+                </ul>
+                <form action="/delete_tasks" method="post">
+                    <button type="submit">Delete All Tasks</button>
+                </form>
+                <br>
+                {% else %}
+                <h3>You have no tasks</h3>
+            {% endif %}
+            <form action="/tasks" method="post" class="form-group">
+                <label for="description">Make a new task</label>
+                <input type="text" name="description" id="description" required>
+                <br>
+                <label>Add the Task to your Categories:</label>
+                <br>
+                {% for category in categories %}
+                    <input type="checkbox" name="task_categories" value="{{ category.getId }}"> {{ category.getName }}
+                    <br>
+                {% endfor %}
+                <br>
+                <button type="submit">Add Task</button>
+                <br>
+            </form>
+            <br>
+            <a href="/"><button type="submit">Go Home</button></a>
+        </div>
+    </body>
+</html>
