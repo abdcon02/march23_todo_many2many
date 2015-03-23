@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+        <title></title>
+    </head>
+    <body>
+        <h1>Update the {{ task.getDescription }} Task</h1>
+        <form action="/task_edit/{{ task.getId }}" method="post">
+        <input name="_method" type="hidden" value="patch">
+        <label for="description">Rename this task:</label>
+
+        </form>
+    </body>
+</html>

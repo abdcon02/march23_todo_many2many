@@ -92,8 +92,9 @@
 
 // Renders indivdual task pages
 
-    $app->get("/tasks/{id}", function($id) use($app) {
-
+    $app->get("/task_edit/{id}", function($id) use($app) {
+        $task = Task::find($id);
+        return $app['twig']->render('task_edit.html.twig', array('task' => $task));
     });
 
 // Patch and Update pages
