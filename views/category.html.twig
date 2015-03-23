@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Category Tasks</title>
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+    </head>
+    <body>
+        <h1>Your Category is {{ category.getName }}</h1>
+        {% if tasks is not empty %}
+            <h3>The tasks for this category are:</h3>
+            <ul>
+                {% for task in tasks %}
+                    <li><a href="/task_edit/{{ task.getId }}"><button type="submit">{{ task.getDescription }}</button></a></li>
+                {% endfor %}
+            </ul>
+            {% else %}
+                <h3>There are no tasks for this category</h3>
+        {% endif %}
+
+        <h3>Add a task to your category</h3>
+
+        <form action="/category_tasks/{{ category.getId }}" method="post" class="form-group">
+            <label for="description">Make a new task</label>
+            <input type="text" name="description" id="description" required>
+            <button type="submit">Add Task</button>
+        </form>
+        <a href="/categories_edit/{{ category.getId }}"><button type="submit">Edit this Category</button></a> <br><br>
+        <a href="/categories"><button type="submit">Go Back to Categories</button></a>
+
+    </body>
+</html>

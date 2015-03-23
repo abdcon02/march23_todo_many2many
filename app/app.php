@@ -18,7 +18,7 @@
         return $app['twig']->render('index.html.twig');
     });
 
-// Renders Category 
+// Renders Category pages
 
     $app->get("/categories", function() use($app) {
         return $app['twig']->render('categories.html.twig', array('categories'=>Category::getAll()));
@@ -37,7 +37,8 @@
         return $app['twig']->render('categories.html.twig', array('categories' =>Category::getAll()));
     });
 
-//
+// Renders Task pages
+
     $app->get("/tasks", function() use($app) {
         return $app['twig']->render('tasks.html.twig', array('tasks'=>Task::getAll(), 'categories'=>Category::getAll()));
     });
@@ -46,6 +47,16 @@
         $description = $_POST['description'];
         $new_task = new Task($description);
         $new_task->save();
+
+        if(isset($_POST['task_categories'])){
+            foreach($_POST['task_categories'] as $category_id) {
+                $category = Category::find($category_id);
+                $category->addTask($new_task);
+
+            }
+        }
+
+
         return $app['twig']->render('tasks.html.twig', array('tasks'=>Task::getAll(), 'categories'=>Category::getAll()));
     });
 
@@ -54,9 +65,59 @@
         return $app['twig']->render('tasks.html.twig', array('tasks'=>Task::getAll(), 'categories'=>Category::getAll()));
     });
 
+
+// Renders invidual category pages
+
+    $app->get("/categories/{id}", function($id) use($app){
+
+        $category = Category::find($id);
+        $category_tasks = $category->getTasks();
+
+
+        return $app['twig']->render('category.html.twig', array('category' => $category, 'tasks' => $category_tasks));
+    });
+
+    $app->post("/category_tasks/{id}", function($id) use($app){
+
+        $category = Category::find($id);
+        $task = $_POST['description'];
+        $new_task = new Task($task);
+        $new_task->save();
+        $category->addTask($new_task);
+        $category_tasks = $category->getTasks();
+
+        return $app['twig']->render('category.html.twig', array('category' => $category, 'tasks' => $category_tasks));
+    });
+
+
+// Renders indivdual task pages
+
     $app->get("/tasks/{id}", function($id) use($app) {
 
     });
+
+// Patch and Update pages
+
+    $app->get("/categories_edit/{id}", function($id) use($app){
+        $category = Category::find($id);
+
+        return $app['twig']->render('category_edit.html.twig', array('category' => $category));
+    });
+
+    $app->patch("/categories_edit/{id}", function($id) use($app) {
+        $category = Category::find($id);
+        $category->update($_POST['name']);
+
+        return $app['twig']->render('categories.html.twig', array('categories' => Category::getAll()));
+    });
+
+    $app->delete("/categories_edit/{id}", function($id) use($app){
+        $category = Category::find($id);
+        $category->delete();
+
+        return $app['twig']->render('categories.html.twig', array('categories' => Category::getAll()));
+    });
+
 
 
     return $app;

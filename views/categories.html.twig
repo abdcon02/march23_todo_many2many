@@ -12,7 +12,7 @@
                 <h3>These are you categories:</h3>
                     <ol>
                     {% for thing in categories %}
-                        <li><a href='/categories{{ thing.getId }}'><button type="sumbit">{{ thing.getName }}</button></a></li>
+                        <li><a href='/categories/{{ thing.getId }}'><button type="sumbit">{{ thing.getName }}</button></a></li>
                         <br>
                     {% endfor %}
                     </ol>
@@ -30,7 +30,6 @@
                 <input type="text" name="name" id="name">
                 <button type="submit">Create Category</button>
             </form>
-
             <a href="/"><button type="submit">Go Home</button></a>
         </div>
     </body>

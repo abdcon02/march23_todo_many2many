@@ -29,7 +29,7 @@
                 <label>Add the Task to your Categories:</label>
                 <br>
                 {% for category in categories %}
-                    <input type="checkbox" name="task_categories" value="{{ category.getId }}"> {{ category.getName }}
+                    <input type="checkbox" name="task_categories[]" value="{{ category.getId }}"> {{ category.getName }}
                     <br>
                 {% endfor %}
                 <br>
