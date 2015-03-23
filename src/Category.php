@@ -34,7 +34,7 @@
 
         function save()
         {
-            $statement = $GLOBALS['DB']->query("INSERT INTO categories (name) VALUES ('{$this->getName()}') RETURNING id");
+            $statement = $GLOBALS['DB']->query("INSERT INTO categories (name) VALUES ('{$this->getName()}') RETURNING id;");
             $result = $statement->fetch(PDO::FETCH_ASSOC);
             $this->setId($result['id']);
         }
@@ -54,7 +54,7 @@
 
         static function deleteAll()
         {
-            $statement = $GLOBALS['DB']->exec("DELETE FROM categories *;");
+            $GLOBALS['DB']->exec("DELETE FROM categories *;");
         }
 
     }
